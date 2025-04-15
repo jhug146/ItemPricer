@@ -1,0 +1,24 @@
+{
+    "name": "Item Saver",
+    "description": "Saves every Vinted page visited for future use and gives ability to save items purchased on Vinted",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+      "default_icon": "images/icon.png"
+    },
+    "content_scripts": [
+        {
+          "js": ["scripts/content.js"],
+          "matches": [
+            "https://www.vinted.co.uk/items/*"
+          ]
+        }
+    ],
+    "background": {
+        "service_worker": "scripts/service-worker.js"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab"
+    ]
+}
