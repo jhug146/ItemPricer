@@ -5,6 +5,7 @@ import json
 import csv
 import traceback
 import requests
+from datetime import datetime
 from latest_user_agents import get_latest_user_agents
 
 
@@ -21,9 +22,10 @@ def new_item(request):
             vinted_id = body["vinted_id"]
             url = body["url"]
             is_bought = body["is_bought"]
+            timestring = datetime.now().strftime("%d/%m/%Y-%H:%M:%S")
         
             save_page(url, vinted_id)
-            save_to_spreadsheet(url, vinted_id, is_bought)
+            save_to_spreadsheet(url, vinted_id, is_bought, timestring)
         except Exception as error:
             return JsonResponse({
                 "status": "failure",
@@ -50,14 +52,15 @@ def save_page(url, vinted_id):
     with open(local_html(vinted_id), "w", encoding="utf-8") as item_page:
         item_page.write(response.text)
 
-def save_to_spreadsheet(url, vinted_id, is_bought):
+def save_to_spreadsheet(url, vinted_id, is_bought, timestring):
     write_csv(
         CSV_LOCATION,
         [
             vinted_id,
             local_html(vinted_id),
             url,
-            is_bought
+            is_bought,
+            timestring
         ]
     )
 
